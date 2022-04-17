@@ -14,7 +14,7 @@ import javax.validation.Valid;
  * @author Neil Alishev
  */
 @Controller
-@RequestMapping("/people")
+@RequestMapping( "/people")
 public class PeopleController {
 
     private final PersonDAO personDAO;
@@ -41,9 +41,11 @@ public class PeopleController {
         return "people/new";
     }
 
-    @PostMapping()
+    @PostMapping(produces = "text/html; charset=utf-8" )
     public String create(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult) {
-        if(bindingResult.hasErrors())
+        System.out.println(person.getAge());
+        System.out.println(person.getName());
+        if (bindingResult.hasErrors())
             return "people/new";
         personDAO.save(person);
         return "redirect:/people";
@@ -56,16 +58,16 @@ public class PeopleController {
     }
 
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute("person") @Valid Person person,BindingResult bindingResult ,@PathVariable("id") int id) {
+    public String update(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult, @PathVariable("id") int id) {
         if (bindingResult.hasErrors())
             return "people/edit";
         personDAO.update(id, person);
         return "redirect:/people";
     }
+
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") int id){
+    public String delete(@PathVariable("id") int id) {
         personDAO.delete(id);
         return "redirect:/people";
     }
-
 }
