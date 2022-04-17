@@ -6,8 +6,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.alishev.springcourse.models.Person;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.List;
 
 @Component
@@ -30,15 +28,15 @@ public class PersonDAO {
     }
 
     public void save(Person person) {
-        jdbcTemplate.update("INSERT INTO Person VALUES (1,?,?,?)", person.getName(), person.getAge(), person.getEmail());
+        jdbcTemplate.update("INSERT INTO Person (name ,age, email)VALUES (?,?,?)", person.getName(), person.getAge(), person.getEmail());
     }
 
     public void update(int id, Person updatedPerson) {
-        jdbcTemplate.update("UPDATE Person SET name =?, age=?,email=?,id=?",
-                updatedPerson.getName(), updatedPerson.getAge(), updatedPerson.getEmail(), id);
+        jdbcTemplate.update("UPDATE Person SET name =?, age=?,email=? WHERE id=?",
+                updatedPerson.getName(), updatedPerson.getAge(), updatedPerson.getEmail(),id);
     }
 
     public void delete(int id) {
-        jdbcTemplate.update("DELETE FROM Person WHERE id=?",id);
+        jdbcTemplate.update("DELETE FROM Person WHERE id=?", id);
     }
 }
